@@ -2,3 +2,6 @@
 *.obsidian/
 .vscode/
 .ruff_cache/
+
+
+.venv/
