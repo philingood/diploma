@@ -1,14 +1,31 @@
 # Функции
 
+<!--toc:start-->
+- [Функции](#функции)
+  - [Прандтля-Майера](#прандтля-майера)
+  - [Число Маха в критике](#число-маха-в-критике)
+  - [Вычисление Throat region Mach = 1+ curve parameters](#вычисление-throat-region-mach-1-curve-parameters)
+    - [Разбиение радиуса на сегменты](#разбиение-радиуса-на-сегменты)
+    - [Параметры сегментов кривой](#параметры-сегментов-кривой)
+    - [Расчёт радиусов](#расчёт-радиусов)
+    - [Заполнение массива точек](#заполнение-массива-точек)
+  - [Вычисление Throat near wall region parameters](#вычисление-throat-near-wall-region-parameters)
+    - [Основной цикл по характеристикам](#основной-цикл-по-характеристикам)
+    - [Внутренний цикл по характеристикам](#внутренний-цикл-по-характеристикам)
+      - [Расчёт первой точки $j = 0$](#расчёт-первой-точки-j-0)
+      - [Итеративный процесс уточнения](#итеративный-процесс-уточнения)
+    - [Обработка остальных точек $j > 0$](#обработка-остальных-точек-j-0)
+      - [Итеративное уточнение параметров для $j > 0$](#итеративное-уточнение-параметров-для-j-0)
+<!--toc:end-->
+
 ## Прандтля-Майера
 
 $$
 \sqrt{\frac{\gamma+1}{\gamma-1}} \cdot \arctan{\left( \frac{(\gamma-1) \cdot \left(M_{\mu}^2-1\right)}{\gamma+1}  \right)} - \arctan{\left( M_{\mu}^2-1 \right)}
 $$
 
-
 $$
-q(\lambda) = {\left( {\gamma_{\lambda}+1} \over 2 \right)}^{\dfrac{1}{\gamma_{\lambda}-1}} \cdot \dfrac{\sqrt{\dfrac{\gamma_{\lambda}+1}{2}} \cdot M_{\lambda}}{\sqrt{1+ \dfrac{\gamma_{\lambda}-1}{2}\cdot M_{\lambda}^2}}\ \cdot {\left( 1 - \dfrac{\gamma_{\lambda}-1}{\gamma_{\lambda}+1} \cdot {\left( \sqrt{\dfrac{\gamma_{\lambda}+1}{2}} \cdot M_{\lambda} \over \sqrt{1+ \dfrac{\gamma_{\lambda}-1}{2}\cdot M_{\lambda}^2} \right)}^2 \right)}^{\dfrac{1}{\gamma_{\lambda}-1}} 
+q(\lambda) = {\left( {\gamma_{\lambda}+1} \over 2 \right)}^{\dfrac{1}{\gamma_{\lambda}-1}} \cdot \dfrac{\sqrt{\dfrac{\gamma_{\lambda}+1}{2}} \cdot M_{\lambda}}{\sqrt{1+ \dfrac{\gamma_{\lambda}-1}{2}\cdot M_{\lambda}^2}}\ \cdot {\left( 1 - \dfrac{\gamma_{\lambda}-1}{\gamma_{\lambda}+1} \cdot {\left( \sqrt{\dfrac{\gamma_{\lambda}+1}{2}} \cdot M_{\lambda} \over \sqrt{1+ \dfrac{\gamma_{\lambda}-1}{2}\cdot M_{\lambda}^2} \right)}^2 \right)}^{\dfrac{1}{\gamma_{\lambda}-1}}
 $$
 
 ## Число Маха в критике
@@ -33,22 +50,22 @@ $$
 
 $$
 cst = -\alpha_0 -
-	\sqrt{\dfrac{\gamma+1}{\gamma-1}} \cdot
-	\arctan{\left(
-			\sqrt{\dfrac{\gamma-1}{\gamma+1}} \cdot
-			\dfrac{1}{\tan{\alpha_0}} 
-		\right)},
+ \sqrt{\dfrac{\gamma+1}{\gamma-1}} \cdot
+ \arctan{\left(
+   \sqrt{\dfrac{\gamma-1}{\gamma+1}} \cdot
+   \dfrac{1}{\tan{\alpha_0}}
+  \right)},
 $$
 
 $$
-\theta(\alpha) = 
-	\sqrt{\dfrac{\gamma+1}{\gamma-1}} \cdot
-	\arctan{\left(
-			\sqrt{\dfrac{\gamma-1}{\gamma+1}} \cdot
-			\dfrac{1}{\tan{\alpha}}
-		\right)} +
-	\alpha +
-	cst,
+\theta(\alpha) =
+ \sqrt{\dfrac{\gamma+1}{\gamma-1}} \cdot
+ \arctan{\left(
+   \sqrt{\dfrac{\gamma-1}{\gamma+1}} \cdot
+   \dfrac{1}{\tan{\alpha}}
+  \right)} +
+ \alpha +
+ cst,
 $$
 
 ## Вычисление Throat region Mach = 1+ curve parameters
@@ -62,7 +79,6 @@ $$
 ### Разбиение радиуса на сегменты
 
 Переменная `nChar` обозначает количество характеристик (линий). Массив `radii` хранит радиальные координаты точек на горловине, где $M = 1$.
- 
 
 Инициализация массива:
 
@@ -93,20 +109,22 @@ $$
 1. **Уменьшение радиуса от 1 до `sn_r1`:**
 
     - Радиус уменьшается экспоненциально:
+
     ```python
     for i in range(1, int(nChar / 2)):
         r1_current = r1_current - b1_r1 * mt.pow(qr, i - 1)
         radii[i] = r1_current
     ```
 
-	- Формула для радиуса:
+ - Формула для радиуса:
     $$
     r_{1}(i) = r_{1\_current} - b1\_r1 \cdot qr^{(i-1)}
-	$$
+ $$
 
 2. **Увеличение радиуса от `sn_r1` до 0:**
 
     - Радиус увеличивается экспоненциально:
+
     ```python
     for i in range(1, int(nChar / 2)):
         r2_current = r2_current + b1_r2 * mt.pow(qr, i - 1)
@@ -121,6 +139,7 @@ $$
 ### Заполнение массива точек
 
 В конце, массив `ArrayPtsIsoMach` заполняется следующими значениями:
+
 - Радиальная координата `r`: $radii[i]$
 - Координата вдоль оси `z`:
   $$z = 2 \cdot \epsilon_s \cdot \left(1 - r^2\right)$$
@@ -139,6 +158,7 @@ for i in range(nChar):
 Таким образом, этот код формирует кривую для горловины сопла, где число Маха в каждой точке равно или больше 1, и описывает геометрию соответствующего изопериметрического сечения.
 
 ## Вычисление Throat near wall region parameters
+
 Этот фрагмент кода занимается настройкой параметров в области горловины сопла, близкой к стенке, путём итеративного расчёта характеристик (радиуса, координаты, углов) для каждой точки. Давайте подробно рассмотрим, что происходит в каждой части кода.
 
 ### Основной цикл по характеристикам
@@ -161,6 +181,7 @@ for j in range(nChar - i):
 Внутренний цикл проходит по всем характеристикам для текущей итерации `i`.
 
 #### Расчёт первой точки $j = 0$
+
 ```python
 if j == 0:
     epsilon = 0.1
@@ -234,7 +255,7 @@ else:
     theta2_current = (theta0 + theta1) / 2
 ```
 
-Для остальных точек (где $j > 0$) начальные значения рассчитываются как среднее между предыдущей и следующей точкой. 
+Для остальных точек (где $j > 0$) начальные значения рассчитываются как среднее между предыдущей и следующей точкой.
 
 #### Итеративное уточнение параметров для $j > 0$
 
@@ -269,3 +290,4 @@ while epsilon > 0.00001:
         ArrayPtsIsoMach[i, j, 3] = theta2_new
     else:
         z2_current = z2_new
+
