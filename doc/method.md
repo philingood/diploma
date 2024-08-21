@@ -144,7 +144,7 @@ $$
 - Координата вдоль оси `z`:
   $$z = 2 \cdot \epsilon_s \cdot \left(1 - r^2\right)$$
 - Угол $\alpha$:
-  $$\alpha = \arcsin{\left(\frac{1}{M\_min}\right)}$$
+  $$\alpha = \arcsin{\left(\frac{1}{M_{min}}\right)}$$
 - Угол $\theta$ задается нулем.
 
 ```python
@@ -233,6 +233,42 @@ while epsilon > 1e-5:
 ```
 
 Здесь происходит итеративное уточнение координат и углов с целью минимизации ошибки $\epsilon$. Итерация продолжается до тех пор, пока ошибка не станет достаточно малой ($\epsilon < 1e-5$).
+
+1. Угол $\theta_m$ вычисляется через обратный косинус:
+
+   $$
+   \theta_{m_{\text{new}}} = \arccos\left(1 - \frac{y_{m_{\text{current}}} - 1}{r}\right)
+   $$
+
+2. Средний угол $\phi_2$:
+
+   $$
+   \phi_2 = \frac{\theta_M + \theta_{m_{\text{new}}}}{2}
+   $$
+
+3. Средний угол $\phi_1$:
+
+   $$
+   \phi_1 = \frac{\theta_{m_{\text{new}}} + \theta_k}{2} + \frac{\alpha_{m_{\text{current}}} + \alpha_k}{2}
+   $$
+
+4. Новая координата $x_m$:
+
+   $$
+   x_{m_{\text{new}}} = \frac{y_M - y_k - x_M \tan(\phi_2) + x_k \tan(\phi_1)}{\tan(\phi_1) - \tan(\phi_2)}
+   $$
+
+5. Новая координата $y_m$:
+
+   $$
+   y_{m_{\text{new}}} = y_M + (x_{m_{\text{new}}} - x_M) \tan\left(\frac{\theta_M + \theta_{m_{\text{new}}}}{2}\right)
+   $$
+
+6. Ошибка $\epsilon$:
+
+   $$
+   \epsilon = \left(\frac{\theta_{m_{\text{new}}} - \theta_{m_{\text{current}}}}{\theta_{m_{\text{current}}} + 1 \times 10^{-10}}\right)^2 + \left(\frac{y_{m_{\text{new}}} - y_{m_{\text{current}}}}{y_{m_{\text{current}}} + 1 \times 10^{-10}}\right)^2 + \left(\frac{x_{m_{\text{new}}} - x_{m_{\text{current}}}}{x_{m_{\text{current}}} + 1 \times 10^{-10}}\right)^2
+   $$
 
 ### Обработка остальных точек $j > 0$
 
