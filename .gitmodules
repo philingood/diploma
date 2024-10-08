@@ -1,3 +1,6 @@
 [submodule "moc2d"]
 	path = moc2d
 	url = https://gitlab.mai.ru/nio-202/nozzles/moc2d.git
+[submodule "lpre"]
+	path = lpre
+	url = https://gitlab.mai.ru/FAGunin/lpre.git
