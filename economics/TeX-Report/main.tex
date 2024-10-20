@@ -1,0 +1,46 @@
+%!TEX TS-program = xelatex
+
+% Авторы кода, взятого за основу: 
+% 1. Author: Amet Umerov (admin@amet13.name)
+% https://github.com/Amet13/bachelor-diploma
+% 2. Tuned for MAI by Rodin Fedor
+%
+% Автор: Филипп Гунин
+% https://github.com/philingood/mai-report-latex
+%
+% Програмный код распространяется под лицензией GNU GPLv3
+
+
+% НАСТРОЙКИ ФОРМАТИРОВАНИЯ
+% \def \EmptyPageAfterTitle {}			% закомментировать, если не нужна пустая страница после титульной
+% \def \TwoSided {}				% если не закомментировано, то поля слева и справа будут чередоваться, нужно для двухсторонней печати. Если предполагается односторонняя печать, закомментируйте.
+
+
+\ifx \TwoSided \undefined
+    \documentclass[a4paper,titlepage,14pt]{extarticle}
+\else
+    \documentclass[a4paper,twoside,titlepage,14pt]{extarticle}
+\fi
+
+
+\input{tex/parameters.tex} % Подключаем список параметров
+\input{tex/preamble} % Подключаем преамбулу
+
+
+%%% НАЧАЛО ДОКУМЕНТА %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+
+% \include{tex/title.tex}
+
+% \tableofcontents % Содержание
+% \clearpage
+
+% \input{inc/0-abbreviation}
+\input{inc/0-intro}
+\input{inc/1-org}
+\input{inc/2-economic}
+% \input{inc/0-outro}
+% \input{inc/0-bibliography}
+
+\end{document}
+%%% КОНЕЦ ДОКУМЕНТА %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

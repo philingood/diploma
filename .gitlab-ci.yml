@@ -1,0 +1,21 @@
+stages:
+  - economics
+
+variables:
+  DOCKER_IMAGE: "$CI_REGISTRY/fagunin/latex-in-docker"
+  DOCKER_IMAGE_TAG: "texlive-full"
+  DOCKER_TLS_CERTDIR: "/certs"
+
+economics_build_pdf:
+  stage: economics
+  image:
+    name: $DOCKER_IMAGE:$DOCKER_IMAGE_TAG
+  script:
+    - cd economics/TeX-Report
+    - make build
+  artifacts:
+    paths:
+      - economics/TeX-Report/economics.pdf
+    expire_in: never
+  only:
+    - economics
