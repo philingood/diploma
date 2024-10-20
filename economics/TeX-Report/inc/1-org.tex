@@ -1,0 +1,243 @@
+\subsection{Организационный подраздел}
+
+Работа состоит из нескольких этапов, каждый имеет срок исполнения и список сотрудников, занятых на конкретном этапе. Состав, количество исполнителей и длительность каждого цикла представление в таблице~\ref{tab:org-proj}.
+
+\begin{longtable}{|p{.5cm}|p{4cm}|p{4cm}|p{2.8cm}|p{3cm}|}
+	\caption{Организация проекта}\label{tab:org-proj}                                                                                                                                  \\
+	\hline
+	\textnumero & Наименование этапа                                                           & Исполнители           & Количество исполнителей & Длительность этапа разработки, дней \\
+	\hline
+	\endhead
+	\newcounter{opnum}
+	\setcounter{opnum}{1}
+	\theopnum   & Составление технического задания                                             & Главный конструктор   & 1                       & 3                                   \\
+	\hline \addtocounter{opnum}{1}
+	\theopnum   & Проведение основных параметрических расчетов двигательной установки          & Инженер-проектировщик & 1                       & 6                                   \\
+	\hline \addtocounter{opnum}{1}
+	\theopnum   & Проектирование расчетной программы для нахождения оптимального профиля сопла & Инженер-проектировщик & 1                       & 30                                  \\
+	\hline \addtocounter{opnum}{1}
+	\theopnum   & Проведение параметрических расчетов камеры сгорания                          & Инженер-проектировщик & 1                       & 10                                  \\
+	\hline \addtocounter{opnum}{1}
+	\theopnum   & Проведение параметрических расчетов турбонасосного агрегата                  & Инженер-проектировщик & 1                       & 15                                  \\
+	\hline \addtocounter{opnum}{1}
+	\theopnum   & Прочностной расчет камеры сгорания                                           & Инженер-конструктор   & 1                       & 8                                   \\
+	\hline \addtocounter{opnum}{1}
+	\theopnum   & Прочностной расчет ТНА                                                       & Инженер-конструктор   & 1                       & 8                                   \\
+	\hline \addtocounter{opnum}{1}
+	\theopnum   & Составление маршрутно-операционного описания технологического сборки ТНА     & Инженер-технолог      & 1                       & 10                                  \\
+	\hline \addtocounter{opnum}{1}
+	\theopnum   & Формулирование выводов по проделанной работе и оформление документации       & Инженер-проектировщик & 1                       & 2                                   \\
+	\hline      & Итого                                                                        &                       &                         & 92                                  \\
+	\hline
+\end{longtable}
+
+\begin{table}[h]
+	\caption{Сетевая модель проекта}\label{tab:web-model-of-proj}
+	\begin{tabular}{|c|c|p{4.8cm}|}
+		\hline Предшествующая работа & Идентификатор работа & Продолжительность работы, дни \\
+		\hline -                     & 1                    & 3                             \\
+		\hline 1                     & 2                    & 6                             \\
+		\hline 1                     & 3                    & 30                            \\
+		\hline 2, 3                  & 4                    & 10                            \\
+		\hline 2                     & 5                    & 15                            \\
+		\hline 4                     & 6                    & 8                             \\
+		\hline 5                     & 7                    & 8                             \\
+		\hline 7                     & 8                    & 10                            \\
+		\hline 6, 8                  & 9                    & 2                             \\
+		\hline
+	\end{tabular}
+\end{table}
+
+Далее приведена последовательность и продолжительность выполняемых работ (таблица~\ref{tab:web-model-of-proj}).
+
+\begin{center}
+	\begin{tikzpicture}[outer sep=auto]
+		\node (start) [draw, rectangle] {Старт};
+
+		\node (1) [rectangle, right of=start, node distance=2cm, inner sep=0pt] {
+			\begin{tabular}{|c|c|}
+				\hline
+				1 & 3                   \\
+				\hline
+				1 & 3                   \\
+				\hline
+				1 & 3                   \\
+				\hline
+				\multicolumn{2}{|c|}{0} \\
+				\hline
+			\end{tabular}
+		};
+
+		\node (2) [rectangle, above right of=1, node distance=3cm, inner sep=0pt] at (1,2) {
+			\begin{tabular}{|c|c|}
+				\hline
+				2  & 6                  \\
+				\hline
+				4  & 9                  \\
+				\hline
+				13 & 18                 \\
+				\hline
+				\multicolumn{2}{|c|}{9} \\
+				\hline
+			\end{tabular}
+		};
+
+		\node (3) [rectangle, below right of=1, node distance=3cm, inner sep=0pt] at (1.4,-2) {
+			\begin{tabular}{|c|c|}
+				\hline
+				3 & 30                  \\
+				\hline
+				4 & 33                  \\
+				\hline
+				4 & 33                  \\
+				\hline
+				\multicolumn{2}{|c|}{0} \\
+				\hline
+			\end{tabular}
+		};
+
+		\node (4) [rectangle, right of=3, node distance=3cm, inner sep=0pt] {
+			\begin{tabular}{|c|c|}
+				\hline
+				4  & 10                 \\
+				\hline
+				34 & 43                 \\
+				\hline
+				34 & 43                 \\
+				\hline
+				\multicolumn{2}{|c|}{0} \\
+				\hline
+			\end{tabular}
+		};
+
+		\node (5) [rectangle, right of=2, node distance=2.4cm, inner sep=0pt] {
+			\begin{tabular}{|c|c|}
+				\hline
+				5  & 15                 \\
+				\hline
+				10 & 24                 \\
+				\hline
+				19 & 33                 \\
+				\hline
+				\multicolumn{2}{|c|}{9} \\
+				\hline
+			\end{tabular}
+		};
+
+		\node (6) [rectangle, right of=4, node distance=3cm, inner sep=0pt] {
+			\begin{tabular}{|c|c|}
+				\hline
+				6  & 8                  \\
+				\hline
+				44 & 51                 \\
+				\hline
+				44 & 51                 \\
+				\hline
+				\multicolumn{2}{|c|}{0} \\
+				\hline
+			\end{tabular}
+		};
+
+		\node (7) [rectangle, right of=5, node distance=2.4cm, inner sep=0pt] {
+			\begin{tabular}{|c|c|}
+				\hline
+				7  & 8                  \\
+				\hline
+				25 & 32                 \\
+				\hline
+				34 & 41                 \\
+				\hline
+				\multicolumn{2}{|c|}{9} \\
+				\hline
+			\end{tabular}
+		};
+
+		\node (8) [rectangle, right of=7, node distance=2.4cm, inner sep=0pt] {
+			\begin{tabular}{|c|c|}
+				\hline
+				8  & 10                 \\
+				\hline
+				33 & 42                 \\
+				\hline
+				42 & 51                 \\
+				\hline
+				\multicolumn{2}{|c|}{9} \\
+				\hline
+			\end{tabular}
+		};
+
+		\node (9) [rectangle, right of=1, node distance=9cm, inner sep=0pt] {
+			\begin{tabular}{|c|c|}
+				\hline
+				9  & 2                  \\
+				\hline
+				52 & 53                 \\
+				\hline
+				52 & 53                 \\
+				\hline
+				\multicolumn{2}{|c|}{0} \\
+				\hline
+			\end{tabular}
+		};
+
+		\node (finish) [draw, rectangle, right of=start, node distance=13.4cm] {Финиш};
+
+		% Edges with automatic connection to the borders of blocks
+		\draw[arrows = {-Latex[width=0pt 10, length=10pt]}] (start.east) -- (1.west);
+		\draw[arrows = {-Latex[width=0pt 10, length=10pt]}] (1.north) -- (2.south west);
+		\draw[arrows = {-Latex[width=0pt 10, length=10pt]}] (1.south) -- (3.north west);
+		\draw[arrows = {-Latex[width=0pt 10, length=10pt]}] (2.east) -- (5.west);
+		\draw[arrows = {-Latex[width=0pt 10, length=10pt]}] (2.east) -- (4.west);
+		\draw[arrows = {-Latex[width=0pt 10, length=10pt]}] (3.east) -- (4.west);
+		\draw[arrows = {-Latex[width=0pt 10, length=10pt]}] (4.east) -- (6.west);
+		\draw[arrows = {-Latex[width=0pt 10, length=10pt]}] (5.east) -- (7.west);
+		\draw[arrows = {-Latex[width=0pt 10, length=10pt]}] (7.east) -- (8.west);
+		\draw[arrows = {-Latex[width=0pt 10, length=10pt]}] (8.south) -- (9.north);
+		\draw[arrows = {-Latex[width=0pt 10, length=10pt]}] (6.north east) -- (9.south);
+		\draw[arrows = {-Latex[width=0pt 10, length=10pt]}] (9.east) -- (finish.west);
+
+	\end{tikzpicture}
+\end{center}
+
+Сетевой график на рис.~\ref{fig:web-graf} построен на основе метода конечного пути по следующему алгоритму:
+\begin{itemize}
+	\item[1.] Произведены вычисления самых ранних сроков выполнения работ (прямой ход);
+	\item[2.] Затем произведены вычисления самых поздних сроков выполнения работ (обратный ход);
+	\item[3.] По итогу вычислены резервы для всех работ (разность позднего и раннего старта) и определен критический путь.
+\end{itemize}
+
+Первый этап (прямой ход):
+\begin{itemize}
+	\item[1.] Датой раннего старта работы 1 принимается первый день выполнения проекта, а завершение должно наступить на третий день;
+	\item[2.] Начало работ 2 и 3 наступает на четвертый день, а завершается на девятый и 33-й соответственно;
+	\item[3.] Выполнение работы 4 начинается на 34-й день и заканчивается на 43-й;
+	\item[4.] Выполнение работы 5 начинается на десятый день и заканчивается на 24-й.
+\end{itemize}
+Дальнейшее построение сетевого графика аналогично (см. рис. 1), по итогу работа завершается на 53-й день.
+
+Второй этап (обратный проход):
+\begin{itemize}
+	\item[1.] Датой окончания работ по проекту является 53-й день, следовательно, датой позднего старта (началом работ) для работы 9 будет 52-й день;
+	\item[2.] Чтобы работу 9 можно было начать в 52-й день, работы 6 и 8 должны быть окончены в 51-й день, следовательно, работа 6 должна начаться на 44-й день, а работа 8 на 42-й день.
+\end{itemize}
+Аналогично происходит планировка остальных работ (см. рис. 1).
+
+Третий этап (вычисление временного резерва и определение кратчайшего пути).
+Временной резерв – критерий гибкости расписания выполнения соответствующей работы.
+\begin{equation}
+	FL = LS - ES = LF - EF,
+\end{equation}
+где $LS$ - поздний старт, $ES$ - ранний старт, $LF$ - поздний финиш, $EF$ - ранний финиш.
+\begin{equation}
+	FL_1 = 1 - 1 = 3 - 3 = 0,
+\end{equation}
+\begin{equation}
+	FL_2 = 12 - 4 = 17 - 9 = 8,
+\end{equation}
+\begin{equation}
+	FL_3 = 4 - 4 = 33 - 33 = 0.
+\end{equation}
+Для остальных работ аналогично.
+
+Работа, имеющая нулевой временной резерв, называется критической работой. Таким образом, на критическом пути лежат работы 1, 3, 4, 6 и 9, а его продолжительность - 53 дня.
+
